@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Neo Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo-light.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            padding: 120px 20px 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .profile-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .profile-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .profile-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .profile-card:hover::before {
+            left: 100%;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.4s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .form-input:valid {
+            border-color: var(--neon-green);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-sizing: border-box;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .avatar-section {
+            margin: 20px 0;
+        }
+
+        .avatar-preview {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .current-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--neon-blue);
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .current-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .avatar-info {
+            flex: 1;
+        }
+
+        .avatar-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .avatar-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .avatar-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .avatar-option:hover {
+            border-color: var(--neon-blue);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--neon-green);
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.6);
+        }
+
+        .avatar-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--neon-green);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-profile {
+            background: linear-gradient(45deg, var(--neon-blue), var(--electric-blue));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+            margin-top: 10px;
+        }
+
+        .btn-profile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 64, 255, 0.5);
+        }
+
+        .btn-profile:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--neon-pink), #ff007f);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.5);
+        }
+
+        .stats-overview {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(138, 43, 226, 0.1);
+            border: 2px solid var(--neon-purple);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.2), transparent);
+            transition: left 0.8s;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.4);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--neon-purple);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .achievements-section {
+            grid-column: 1 / -1;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+        }
+
+        .achievements-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--neon-yellow);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-item {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--neon-yellow);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .achievement-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .password-requirements {
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .password-requirements h4 {
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .password-requirements ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            margin-bottom: 5px;
+        }
+
+        .error-message {
+            color: var(--neon-pink);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--neon-green);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .stats-overview {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .profile-card {
+                padding: 30px 25px;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="logo-light.jpg" alt="Neo Games" id="nav-logo">
+        </div>
+
+        <ul class="navbar-links">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="games.html" class="nav-link"><i class="fas fa-gamepad"></i> Games</a></li>
+            <li><a href="social.html" class="nav-link"><i class="fas fa-users"></i> Social</a></li>
+            <li><a href="#" class="nav-link active"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+
+        <div class="user-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+
+            <div id="guest-buttons">
+                <button class="btn-gaming btn-primary" onclick="showLogin()">Login</button>
+                <button class="btn-gaming btn-secondary" onclick="showRegister()">Sign Up</button>
+            </div>
+
+            <div id="user-profile" style="display:none;">
+                <img id="user-avatar" src="avatar-default.jpg" class="user-avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-blue); margin-right: 10px;">
+                <span id="user-name" style="color: var(--text-primary); font-weight: 600; margin-right: 15px;">Player</span>
+                <button class="btn-gaming" onclick="logout()" style="background: var(--neon-pink); color: white; padding: 8px 16px; font-size: 12px;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 class="profile-title">GAMING PROFILE</h1>
+            <p class="profile-subtitle">Manage your account, track achievements, and customize your gaming experience</p>
+        </div>
+
+        <div id="profile-content">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()" title="Chat with Neo AI">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script src="neo-engine.js"></script>
+    <script>
+        // Check if user is logged in
+        function checkLoginStatus() {
+            if (!window.neoEngine || !window.neoEngine.currentUser) {
+                document.getElementById('profile-content').innerHTML = `
+                    <div style="text-align: center; padding: 100px 20px;">
+                        <i class="fas fa-lock" style="font-size: 4rem; color: var(--neon-blue); margin-bottom: 30px;"></i>
+                        <h2 style="color: var(--text-primary); margin-bottom: 20px;">Login Required</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 1.2rem;">
+                            Please login to access your profile, edit information, and track your gaming progress!
+                        </p>
+                        <button class="btn-gaming btn-primary" onclick="showLogin()" style="padding: 15px 40px; font-size: 16px;">
+                            <i class="fas fa-sign-in-alt"></i> Login Now
+                        </button>
+                    </div>
+                `;
+                return false;
+            }
+            return true;
+        }
+
+        // Load profile content
+        function loadProfile() {
+            if (!checkLoginStatus()) return;
+
+            const user = window.neoEngine.currentUser;
+            const achievements = user.achievements || [];
+            const timeSpentHours = Math.floor((user.timeSpent || 0) / 60);
+            const timeSpentMinutes = (user.timeSpent || 0) % 60;
+
+            document.getElementById('profile-content').innerHTML = `
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
+                        <div class="stat-value">${user.gamesPlayed || 0}</div>
+                        <div class="stat-label">Games Played</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value">${timeSpentHours > 0 ? timeSpentHours + 'h' : timeSpentMinutes + 'm'}</div>
+                        <div class="stat-label">Time Played</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                        <div class="stat-value">${achievements.length}</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                        <div class="stat-value">${user.level || 1}</div>
+                        <div class="stat-label">Level</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-value">${(user.friends || []).length}</div>
+                        <div class="stat-label">Friends</div>
+                    </div>
+                </div>
+
+                <div class="profile-grid">
+                    <!-- Profile Information Card -->
+                    <div class="profile-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-user-edit"></i>
+                            Profile Information
+                        </h3>
+
+                        <form id="profile-form" class="profile-form">
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" id="profile-username" class="form-input" value="${user.username}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" id="profile-email" class="form-input" value="${user.email}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Age</label>
+                                <input type="number" id="profile-age" class="form-input" value="${user.age}" min="13" max="100" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <select id="profile-gender" class="form-select" required>
+                                    <option value="male" ${user.gender === 'male' ? 'selected' : ''}>Male</option>
+                                    <option value="female" ${user.gender === 'female' ? 'selected' : ''}>Female</option>
+                                    <option value="other" ${user.gender === 'other' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Favorite Game Type</label>
+                                <select id="profile-favorite-game" class="form-select" required>
+                                    <option value="action" ${user.favoriteGameType === 'action' ? 'selected' : ''}>Action</option>
+                                    <option value="adventure" ${user.favoriteGameType === 'adventure' ? 'selected' : ''}>Adventure</option>
+                                    <option value="puzzle" ${user.favoriteGameType === 'puzzle' ? 'selected' : ''}>Puzzle</option>
+                                    <option value="racing" ${user.favoriteGameType === 'racing' ? 'selected' : ''}>Racing</option>
+                                    <option value="strategy" ${user.favoriteGameType === 'strategy' ? 'selected' : ''}>Strategy</option>
+                                </select>
+                            </div>
+
+                            <div class="avatar-section">
+                                <label class="form-label">Avatar</label>
+                                <div class="avatar-preview">
+                                    <img src="${user.avatar || 'avatar-default.jpg'}" alt="Current Avatar" class="current-avatar" id="current-avatar-preview">
+                                    <div class="avatar-info">
+                                        <div class="avatar-name">Current Avatar</div>
+                                        <div class="avatar-desc">Click on an option below to change your avatar</div>
+                                    </div>
+                                </div>
+                                <div class="avatar-options">
+                                    <img src="avatar-default.jpg" class="avatar-option ${user.avatar === 'avatar-default.jpg' ? 'selected' : ''}" data-avatar="avatar-default.jpg">
+                                    <img src="avatar2.jpg" class="avatar-option ${user.avatar === 'avatar2.jpg' ? 'selected' : ''}" data-avatar="avatar2.jpg">
+                                    <img src="avatar3.jpg" class="avatar-option ${user.avatar === 'avatar3.jpg' ? 'selected' : ''}" data-avatar="avatar3.jpg">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-profile">
+                                <i class="fas fa-save"></i> Update Profile
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Password Change Card -->
+                    <div class="profile-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-lock"></i>
+                            Change Password
+                        </h3>
+
+                        <div class="password-requirements">
+                            <h4><i class="fas fa-shield-alt"></i> Password Requirements</h4>
+                            <ul>
+                                <li>At least 8 characters long</li>
+                                <li>Must contain uppercase and lowercase letters</li>
+                                <li>Must include at least one number</li>
+                                <li>Should include special characters (!@#$%^&*)</li>
+                            </ul>
+                        </div>
+
+                        <form id="password-form" class="profile-form">
+                            <div class="form-group">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" id="current-password" class="form-input" placeholder="Enter current password" required>
+                                <div class="error-message" id="current-password-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" id="new-password" class="form-input" placeholder="Enter new password" required>
+                                <div class="error-message" id="new-password-error"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" id="confirm-password" class="form-input" placeholder="Confirm new password" required>
+                                <div class="error-message" id="confirm-password-error"></div>
+                                <div class="success-message" id="password-success"></div>
+                            </div>
+
+                            <button type="submit" class="btn-profile btn-danger">
+                                <i class="fas fa-key"></i> Change Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3 class="achievements-title">
+                        <i class="fas fa-trophy"></i>
+                        Your Achievements
+                    </h3>
+
+                    <div class="achievements-grid" id="achievements-grid">
+                        ${achievements.length === 0 ? `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--text-secondary);">
+                                <i class="fas fa-medal" style="font-size: 3rem; margin-bottom: 20px; color: var(--neon-yellow);"></i>
+                                <p>No achievements yet! Start playing games and exploring features to unlock achievements.</p>
+                            </div>
+                        ` : achievements.map(achievement => `
+                            <div class="achievement-item">
+                                <span class="achievement-icon">${achievement.split(' ')[0]}</span>
+                                <div class="achievement-name">${achievement}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Set up event listeners
+            setupProfileEventListeners();
+        }
+
+        // Set up event listeners for profile functionality
+        function setupProfileEventListeners() {
+            // Avatar selection
+            document.querySelectorAll('.avatar-option').forEach(avatar => {
+                avatar.addEventListener('click', function() {
+                    document.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    // Update preview
+                    const currentAvatarPreview = document.getElementById('current-avatar-preview');
+                    if (currentAvatarPreview) {
+                        currentAvatarPreview.src = this.dataset.avatar;
+                    }
+                });
+            });
+
+            // Profile form submission
+            const profileForm = document.getElementById('profile-form');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    updateProfile();
+                });
+            }
+
+            // Password form submission
+            const passwordForm = document.getElementById('password-form');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    changePassword();
+                });
+            }
+
+            // Real-time password validation
+            const newPasswordInput = document.getElementById('new-password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+
+            if (newPasswordInput) {
+                newPasswordInput.addEventListener('input', validateNewPassword);
+            }
+
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+            }
+        }
+
+        // Update profile information
+        function updateProfile() {
+            const username = document.getElementById('profile-username').value.trim();
+            const email = document.getElementById('profile-email').value.trim();
+            const age = document.getElementById('profile-age').value;
+            const gender = document.getElementById('profile-gender').value;
+            const favoriteGame = document.getElementById('profile-favorite-game').value;
+            const selectedAvatar = document.querySelector('.avatar-option.selected')?.dataset.avatar || 'avatar-default.jpg';
+
+            if (!username || !email || !age || !gender || !favoriteGame) {
+                window.neoEngine.showNotification('Please fill in all fields! 📝', 'error');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                window.neoEngine.showNotification('Please enter a valid email address! 📧', 'error');
+                return;
+            }
+
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+            const currentUser = window.neoEngine.currentUser;
+
+            // Check if username is taken by someone else
+            if (username !== currentUser.username && allUsers[username]) {
+                window.neoEngine.showNotification('Username already taken! Please choose a different one. 👤', 'error');
+                return;
+            }
+
+            // Check if email is used by someone else
+            const emailExists = Object.values(allUsers).some(user => 
+                user.email === email && user.username !== currentUser.username
+            );
+            if (emailExists) {
+                window.neoEngine.showNotification('Email already in use! Please use a different email. 📧', 'error');
+                return;
+            }
+
+            // Update user data
+            const oldUsername = currentUser.username;
+
+            // Remove old username entry if username changed
+            if (username !== oldUsername) {
+                delete allUsers[oldUsername];
+            }
+
+            // Update user object
+            currentUser.username = username;
+            currentUser.email = email;
+            currentUser.age = parseInt(age);
+            currentUser.gender = gender;
+            currentUser.favoriteGameType = favoriteGame;
+            currentUser.avatar = selectedAvatar;
+
+            // Save updated data
+            allUsers[username] = currentUser;
+            localStorage.setItem('neoUsers', JSON.stringify(allUsers));
+            localStorage.setItem('neoCurrentUser', JSON.stringify(currentUser));
+
+            // Update UI
+            window.neoEngine.currentUser = currentUser;
+            window.neoEngine.updateUserUI();
+
+            window.neoEngine.showNotification('Profile updated successfully! 🎉', 'success');
+            window.neoEngine.addAchievement('✏️ Profile Editor');
+        }
+
+        // Validate new password
+        function validateNewPassword() {
+            const password = document.getElementById('new-password').value;
+            const errorElement = document.getElementById('new-password-error');
+
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            const errors = [];
+            if (!requirements.length) errors.push('At least 8 characters');
+            if (!requirements.uppercase) errors.push('One uppercase letter');
+            if (!requirements.lowercase) errors.push('One lowercase letter');
+            if (!requirements.number) errors.push('One number');
+            if (!requirements.special) errors.push('One special character');
+
+            if (errors.length > 0) {
+                errorElement.textContent = 'Missing: ' + errors.join(', ');
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Validate password match
+        function validatePasswordMatch() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const errorElement = document.getElementById('confirm-password-error');
+
+            if (confirmPassword && newPassword !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match';
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Change password
+        function changePassword() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Clear previous messages
+            document.querySelectorAll('.error-message, .success-message').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                window.neoEngine.showNotification('Please fill in all password fields! 🔒', 'error');
+                return;
+            }
+
+            // Verify current password
+            if (currentPassword !== window.neoEngine.currentUser.password) {
+                document.getElementById('current-password-error').textContent = 'Current password is incorrect';
+                document.getElementById('current-password-error').style.display = 'block';
+                return;
+            }
+
+            // Validate new password
+            if (!validateNewPassword()) {
+                return;
+            }
+
+            // Validate password match
+            if (!validatePasswordMatch()) {
+                return;
+            }
+
+            // Same password check
+            if (currentPassword === newPassword) {
+                document.getElementById('new-password-error').textContent = 'New password must be different from current password';
+                document.getElementById('new-password-error').style.display = 'block';
+                return;
+            }
+
+            // Update password
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+            const currentUser = window.neoEngine.currentUser;
+
+            currentUser.password = newPassword;
+            allUsers[currentUser.username] = currentUser;
+
+            localStorage.setItem('neoUsers', JSON.stringify(allUsers));
+            localStorage.setItem('neoCurrentUser', JSON.stringify(currentUser));
+
+            // Clear form
+            document.getElementById('password-form').reset();
+
+            // Show success message
+            const successElement = document.getElementById('password-success');
+            successElement.textContent = 'Password changed successfully!';
+            successElement.style.display = 'block';
+
+            window.neoEngine.showNotification('Password changed successfully! 🔐', 'success');
+            window.neoEngine.addAchievement('🔐 Security Master');
+        }
+
+        // Initialize profile page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status and load profile
+            setInterval(() => {
+                if (window.neoEngine && window.neoEngine.currentUser) {
+                    // Only reload if not already loaded
+                    const profileContent = document.getElementById('profile-content');
+                    if (!profileContent.innerHTML.includes('stats-overview')) {
+                        loadProfile();
+                    }
+                } else {
+                    checkLoginStatus();
+                }
+            }, 1000);
+
+            // Initial load
+            if (checkLoginStatus()) {
+                loadProfile();
+            }
+        });
+    </script>
+</body>
+</html>

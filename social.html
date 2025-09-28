@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social - Neo Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo-light.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .social-container {
+            padding: 120px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .social-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .social-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .friends-panel, .leaderboard-panel {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            height: fit-content;
+        }
+
+        .chat-panel {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-friend-section {
+            margin-bottom: 25px;
+        }
+
+        .add-friend-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .friend-input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .friend-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .add-friend-btn {
+            background: var(--neon-green);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-friend-btn:hover {
+            background: var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        .friends-list {
+            list-style: none;
+        }
+
+        .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .friend-item:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .friend-item.active {
+            background: rgba(57, 255, 20, 0.2);
+            border-color: var(--neon-green);
+        }
+
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-blue);
+            object-fit: cover;
+        }
+
+        .friend-info {
+            flex: 1;
+        }
+
+        .friend-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .friend-status {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-friend-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-blue);
+        }
+
+        .chat-friend-info h3 {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .chat-friend-info p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: messageSlide 0.3s ease;
+        }
+
+        .message.own {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-blue);
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message:not(.own) .message-content {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--neon-blue);
+        }
+
+        .message.own .message-content {
+            background: rgba(57, 255, 20, 0.2);
+            border: 1px solid var(--neon-green);
+            text-align: right;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 20px;
+            gap: 15px;
+            border-top: 2px solid var(--glass-border);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 16px;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .send-btn {
+            background: var(--neon-blue);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .send-btn:hover {
+            background: var(--electric-blue);
+            transform: scale(1.1);
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid var(--neon-purple);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(138, 43, 226, 0.2);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-rank {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--neon-yellow);
+            width: 30px;
+            text-align: center;
+        }
+
+        .leaderboard-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-purple);
+            object-fit: cover;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .leaderboard-hours {
+            font-size: 0.9rem;
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .no-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .no-selection i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+        }
+
+        @keyframes messageSlide {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .social-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .chat-panel {
+                height: 500px;
+            }
+
+            .social-container {
+                padding: 120px 10px 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="logo-light.jpg" alt="Neo Games" id="nav-logo">
+        </div>
+
+        <ul class="navbar-links">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="games.html" class="nav-link"><i class="fas fa-gamepad"></i> Games</a></li>
+            <li><a href="#" class="nav-link active"><i class="fas fa-users"></i> Social</a></li>
+            <li><a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+
+        <div class="user-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+
+            <div id="guest-buttons">
+                <button class="btn-gaming btn-primary" onclick="showLogin()">Login</button>
+                <button class="btn-gaming btn-secondary" onclick="showRegister()">Sign Up</button>
+            </div>
+
+            <div id="user-profile" style="display:none;">
+                <img id="user-avatar" src="avatar-default.jpg" class="user-avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-blue); margin-right: 10px;">
+                <span id="user-name" style="color: var(--text-primary); font-weight: 600; margin-right: 15px;">Player</span>
+                <button class="btn-gaming" onclick="logout()" style="background: var(--neon-pink); color: white; padding: 8px 16px; font-size: 12px;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="social-container">
+        <div class="social-header">
+            <h1 class="social-title">SOCIAL GAMING HUB</h1>
+            <p class="social-subtitle">Connect with friends, share experiences, and climb the leaderboards!</p>
+        </div>
+
+        <div class="social-grid">
+            <!-- Friends Panel -->
+            <div class="friends-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-user-friends"></i>
+                    Friends
+                </h3>
+
+                <div class="add-friend-section">
+                    <div class="add-friend-form">
+                        <input type="text" id="friend-username" class="friend-input" placeholder="Enter username">
+                        <button onclick="addFriend()" class="add-friend-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <ul class="friends-list" id="friends-list">
+                    <!-- Friends will be populated here -->
+                </ul>
+            </div>
+
+            <!-- Chat Panel -->
+            <div class="chat-panel">
+                <div id="chat-content" class="no-selection">
+                    <i class="fas fa-comments"></i>
+                    <h3>Select a friend to start chatting!</h3>
+                    <p>Choose a friend from your friends list to begin messaging.</p>
+                </div>
+            </div>
+
+            <!-- Leaderboard Panel -->
+            <div class="leaderboard-panel">
+                <h3 class="panel-title">
+                    <i class="fas fa-trophy"></i>
+                    Leaderboard
+                </h3>
+
+                <ul class="leaderboard-list" id="leaderboard-list">
+                    <!-- Leaderboard will be populated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()" title="Chat with Neo AI">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script src="neo-engine.js"></script>
+    <script>
+        let currentChatFriend = null;
+
+        // Check if user is logged in
+        function checkLoginStatus() {
+            if (!window.neoEngine || !window.neoEngine.currentUser) {
+                document.querySelector('.social-grid').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 100px 20px;">
+                        <i class="fas fa-lock" style="font-size: 4rem; color: var(--neon-blue); margin-bottom: 30px;"></i>
+                        <h2 style="color: var(--text-primary); margin-bottom: 20px;">Login Required</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 1.2rem;">
+                            Please login to access social features, chat with friends, and view leaderboards!
+                        </p>
+                        <button class="btn-gaming btn-primary" onclick="showLogin()" style="padding: 15px 40px; font-size: 16px;">
+                            <i class="fas fa-sign-in-alt"></i> Login Now
+                        </button>
+                    </div>
+                `;
+                return false;
+            }
+            return true;
+        }
+
+        // Add friend function
+        function addFriend() {
+            if (!checkLoginStatus()) return;
+
+            const username = document.getElementById('friend-username').value.trim();
+            if (!username) {
+                window.neoEngine.showNotification('Please enter a username! 👤', 'error');
+                return;
+            }
+
+            if (username === window.neoEngine.currentUser.username) {
+                window.neoEngine.showNotification("You can't add yourself as a friend! 😅", 'error');
+                return;
+            }
+
+            // Check if user exists
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+            if (!allUsers[username]) {
+                window.neoEngine.showNotification('User not found! Please check the username. 🔍', 'error');
+                return;
+            }
+
+            // Add friend to current user's friend list
+            const currentUser = window.neoEngine.currentUser;
+            if (!currentUser.friends) {
+                currentUser.friends = [];
+            }
+
+            if (currentUser.friends.includes(username)) {
+                window.neoEngine.showNotification('Already friends with this user! 👥', 'info');
+                return;
+            }
+
+            currentUser.friends.push(username);
+
+            // Also add current user to friend's friend list (mutual friendship)
+            const friendUser = allUsers[username];
+            if (!friendUser.friends) {
+                friendUser.friends = [];
+            }
+            if (!friendUser.friends.includes(currentUser.username)) {
+                friendUser.friends.push(currentUser.username);
+            }
+
+            // Save updated data
+            allUsers[currentUser.username] = currentUser;
+            allUsers[username] = friendUser;
+            localStorage.setItem('neoUsers', JSON.stringify(allUsers));
+            localStorage.setItem('neoCurrentUser', JSON.stringify(currentUser));
+
+            document.getElementById('friend-username').value = '';
+            loadFriends();
+
+            window.neoEngine.showNotification(`Added ${username} as friend! 🎉`, 'success');
+            window.neoEngine.addAchievement('👥 Social Butterfly');
+        }
+
+        // Load friends list
+        function loadFriends() {
+            if (!checkLoginStatus()) return;
+
+            const currentUser = window.neoEngine.currentUser;
+            const friendsList = document.getElementById('friends-list');
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+
+            if (!currentUser.friends || currentUser.friends.length === 0) {
+                friendsList.innerHTML = `
+                    <li style="text-align: center; padding: 30px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-user-plus" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                        No friends yet! Add some friends by their username.
+                    </li>
+                `;
+                return;
+            }
+
+            friendsList.innerHTML = '';
+
+            currentUser.friends.forEach(friendName => {
+                const friend = allUsers[friendName];
+                if (!friend) return;
+
+                const friendItem = document.createElement('li');
+                friendItem.className = 'friend-item';
+                friendItem.onclick = () => openChat(friendName);
+
+                friendItem.innerHTML = `
+                    <img src="${friend.avatar || 'avatar-default.jpg'}" alt="${friendName}" class="friend-avatar">
+                    <div class="friend-info">
+                        <div class="friend-name">${friendName}</div>
+                        <div class="friend-status">Level ${friend.level || 1} • ${friend.gamesPlayed || 0} games played</div>
+                    </div>
+                `;
+
+                friendsList.appendChild(friendItem);
+            });
+        }
+
+        // Open chat with friend
+        function openChat(friendName) {
+            if (!checkLoginStatus()) return;
+
+            currentChatFriend = friendName;
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+            const friend = allUsers[friendName];
+
+            // Update active friend styling
+            document.querySelectorAll('.friend-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.friend-item').classList.add('active');
+
+            const chatContent = document.getElementById('chat-content');
+            chatContent.innerHTML = `
+                <div class="chat-header">
+                    <img src="${friend.avatar || 'avatar-default.jpg'}" alt="${friendName}" class="chat-friend-avatar">
+                    <div class="chat-friend-info">
+                        <h3>${friendName}</h3>
+                        <p>Level ${friend.level || 1} • Last seen ${friend.lastActive ? new Date(friend.lastActive).toLocaleDateString() : 'recently'}</p>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will be loaded here -->
+                </div>
+
+                <div class="chat-input-container">
+                    <textarea id="message-input" class="message-input" placeholder="Type your message..." rows="1"></textarea>
+                    <button onclick="sendMessage()" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            `;
+
+            loadMessages();
+
+            // Auto-resize textarea
+            const textarea = document.getElementById('message-input');
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+            });
+
+            // Send on Enter
+            textarea.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        // Load messages for current chat
+        function loadMessages() {
+            if (!currentChatFriend) return;
+
+            const currentUser = window.neoEngine.currentUser.username;
+            const messageKey = [currentUser, currentChatFriend].sort().join('-');
+            const messages = JSON.parse(localStorage.getItem(`neoMessages-${messageKey}`) || '[]');
+            const messagesContainer = document.getElementById('chat-messages');
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+
+            messagesContainer.innerHTML = '';
+
+            if (messages.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div style="text-align: center; padding: 50px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-comment-dots" style="font-size: 3rem; margin-bottom: 20px; color: var(--neon-blue);"></i>
+                        <p>No messages yet! Start the conversation by saying hello!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            messages.forEach(message => {
+                const isOwn = message.from === currentUser;
+                const sender = allUsers[message.from];
+
+                const messageElement = document.createElement('div');
+                messageElement.className = `message ${isOwn ? 'own' : ''}`;
+
+                messageElement.innerHTML = `
+                    <img src="${sender?.avatar || 'avatar-default.jpg'}" alt="${message.from}" class="message-avatar">
+                    <div>
+                        <div class="message-content">${message.message}</div>
+                        <div class="message-time">${message.timestamp} • ${message.date}</div>
+                    </div>
+                `;
+
+                messagesContainer.appendChild(messageElement);
+            });
+
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Send message
+        function sendMessage() {
+            if (!currentChatFriend) return;
+
+            const messageInput = document.getElementById('message-input');
+            const messageText = messageInput.value.trim();
+
+            if (!messageText) return;
+
+            const success = window.neoEngine.sendMessage(
+                window.neoEngine.currentUser.username,
+                currentChatFriend,
+                messageText
+            );
+
+            if (success) {
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+                loadMessages();
+
+                // Achievement for first message
+                const currentUser = window.neoEngine.currentUser;
+                const messageKey = [currentUser.username, currentChatFriend].sort().join('-');
+                const messages = JSON.parse(localStorage.getItem(`neoMessages-${messageKey}`) || '[]');
+                const userMessages = messages.filter(m => m.from === currentUser.username);
+
+                if (userMessages.length === 1) {
+                    window.neoEngine.addAchievement('💬 First Message');
+                } else if (userMessages.length === 10) {
+                    window.neoEngine.addAchievement('🗣️ Chatty Gamer');
+                }
+            }
+        }
+
+        // Load leaderboard with REAL hours
+        function loadLeaderboard() {
+            const allUsers = JSON.parse(localStorage.getItem('neoUsers') || '{}');
+            const leaderboardList = document.getElementById('leaderboard-list');
+
+            // Calculate real time spent for each user (in minutes, convert to hours)
+            const userStats = Object.values(allUsers).map(user => ({
+                username: user.username,
+                avatar: user.avatar || 'avatar-default.jpg',
+                timeSpent: user.timeSpent || 0, // This is real tracked time in minutes
+                gamesPlayed: user.gamesPlayed || 0
+            }));
+
+            // Sort by real time spent (highest first)
+            userStats.sort((a, b) => b.timeSpent - a.timeSpent);
+
+            if (userStats.length === 0) {
+                leaderboardList.innerHTML = `
+                    <li style="text-align: center; padding: 30px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-trophy" style="font-size: 2rem; margin-bottom: 15px; display: block;"></i>
+                        No players yet! Be the first to join the leaderboard.
+                    </li>
+                `;
+                return;
+            }
+
+            leaderboardList.innerHTML = '';
+
+            // Show top 10 players
+            userStats.slice(0, 10).forEach((user, index) => {
+                const rank = index + 1;
+                const hours = Math.floor(user.timeSpent / 60); // Convert minutes to hours
+                const minutes = user.timeSpent % 60;
+
+                const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}`;
+
+                const leaderboardItem = document.createElement('li');
+                leaderboardItem.className = 'leaderboard-item';
+
+                leaderboardItem.innerHTML = `
+                    <div class="leaderboard-rank">${rankEmoji}</div>
+                    <img src="${user.avatar}" alt="${user.username}" class="leaderboard-avatar">
+                    <div class="leaderboard-info">
+                        <div class="leaderboard-name">${user.username}</div>
+                        <div class="leaderboard-hours">
+                            ${hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`} played • ${user.gamesPlayed} games
+                        </div>
+                    </div>
+                `;
+
+                leaderboardList.appendChild(leaderboardItem);
+            });
+        }
+
+        // Initialize social page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status every second and update if needed
+            setInterval(() => {
+                if (window.neoEngine && window.neoEngine.currentUser) {
+                    loadFriends();
+                    loadLeaderboard();
+                } else {
+                    checkLoginStatus();
+                }
+            }, 1000);
+
+            // Initial load
+            if (checkLoginStatus()) {
+                loadFriends();
+                loadLeaderboard();
+            }
+        });
+    </script>
+</body>
+</html>

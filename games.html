@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Neo Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo-light.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .games-container {
+            padding: 120px 20px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .games-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .games-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .games-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--neon-blue);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--electric-blue);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .game-filters {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .filter-btn {
+            padding: 15px 25px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 25px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--neon-blue);
+            color: white;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .game-tile {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .game-tile:hover::before {
+            left: 100%;
+        }
+
+        .game-tile:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+            border-color: var(--neon-blue);
+        }
+
+        .game-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 15px var(--neon-blue));
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-developer {
+            font-size: 1rem;
+            color: var(--neon-purple);
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-category {
+            background: var(--neon-purple);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .game-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--neon-yellow);
+            font-weight: 600;
+        }
+
+        .play-btn {
+            background: linear-gradient(45deg, var(--neon-blue), var(--electric-blue));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 64, 255, 0.5);
+        }
+
+        .play-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .coming-soon {
+            opacity: 0.7;
+        }
+
+        .coming-soon .game-icon {
+            color: var(--text-secondary);
+            filter: none;
+        }
+
+        .coming-soon .play-btn {
+            background: var(--neon-orange);
+        }
+
+        /* Game Player Modal */
+        .game-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+
+        .game-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 95vw;
+            max-height: 95vh;
+            width: 100%;
+        }
+
+        .game-iframe {
+            width: min(1200px, 90vw);
+            height: min(800px, 70vh);
+            border: 4px solid var(--neon-blue);
+            border-radius: 20px;
+            box-shadow: 
+                0 0 50px rgba(0, 212, 255, 0.6),
+                inset 0 0 20px rgba(0, 212, 255, 0.1);
+            margin-bottom: 25px;
+            background: #000;
+        }
+
+        .game-info-panel {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(25px);
+            max-width: min(1200px, 90vw);
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .game-info-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .game-info-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: var(--neon-blue);
+            margin: 0;
+        }
+
+        .game-info-developer {
+            color: var(--neon-purple);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .game-info-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--neon-yellow);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .developer-details {
+            background: rgba(138, 43, 226, 0.1);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .developer-details h4 {
+            color: var(--neon-purple);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .developer-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            color: var(--text-secondary);
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-close {
+            background: var(--neon-pink);
+            color: white;
+        }
+
+        .btn-fullscreen {
+            background: var(--neon-green);
+            color: white;
+        }
+
+        .btn-rate {
+            background: var(--neon-yellow);
+            color: var(--primary-bg);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+
+            .game-iframe {
+                width: 95vw;
+                height: 50vh;
+            }
+
+            .game-info-panel {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .game-info-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .developer-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="logo-light.jpg" alt="Neo Games" id="nav-logo">
+        </div>
+
+        <ul class="navbar-links">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" class="nav-link active"><i class="fas fa-gamepad"></i> Games</a></li>
+            <li><a href="social.html" class="nav-link"><i class="fas fa-users"></i> Social</a></li>
+            <li><a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+
+        <div class="user-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+
+            <div id="guest-buttons">
+                <button class="btn-gaming btn-primary" onclick="showLogin()">Login</button>
+                <button class="btn-gaming btn-secondary" onclick="showRegister()">Sign Up</button>
+            </div>
+
+            <div id="user-profile" style="display:none;">
+                <img id="user-avatar" src="avatar-default.jpg" class="user-avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-blue); margin-right: 10px;">
+                <span id="user-name" style="color: var(--text-primary); font-weight: 600; margin-right: 15px;">Player</span>
+                <button class="btn-gaming" onclick="logout()" style="background: var(--neon-pink); color: white; padding: 8px 16px; font-size: 12px;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="games-container">
+        <div class="games-header">
+            <h1 class="games-title">QUANTUM GAME LIBRARY</h1>
+            <p class="games-subtitle">Discover 100 amazing games - 50 available now, 50 coming soon!</p>
+
+            <!-- Game Search -->
+            <div class="search-container">
+                <input type="text" id="game-search-input" class="search-input" placeholder="Search games by name...">
+                <button class="search-btn" onclick="searchGames()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <div class="game-filters">
+                <button class="filter-btn active" data-filter="all">All Games</button>
+                <button class="filter-btn" data-filter="action">Action</button>
+                <button class="filter-btn" data-filter="adventure">Adventure</button>
+                <button class="filter-btn" data-filter="puzzle">Puzzle</button>
+                <button class="filter-btn" data-filter="racing">Racing</button>
+                <button class="filter-btn" data-filter="strategy">Strategy</button>
+                <button class="filter-btn" data-filter="arcade">Arcade</button>
+                <button class="filter-btn" data-filter="platformer">Platformer</button>
+            </div>
+        </div>
+
+        <div class="games-grid" id="games-grid">
+            <!-- Games will be dynamically generated -->
+        </div>
+    </div>
+
+    <!-- Game Player Modal -->
+    <div id="game-modal" class="game-modal">
+        <div class="game-player-container">
+            <iframe id="game-iframe" class="game-iframe" frameborder="0" allowfullscreen></iframe>
+
+            <div class="game-info-panel" id="game-info-panel">
+                <!-- Game info will be populated here -->
+            </div>
+
+            <div class="game-controls">
+                <button class="control-btn btn-close" onclick="closeGame()">
+                    <i class="fas fa-times"></i>
+                    <span>Close Game</span>
+                </button>
+                <button class="control-btn btn-fullscreen" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                    <span>Fullscreen</span>
+                </button>
+                <button class="control-btn btn-rate" onclick="rateGame()">
+                    <i class="fas fa-star"></i>
+                    <span>Rate Game</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()" title="Chat with Neo AI">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script src="neo-engine.js"></script>
+    <script>
+        // 50 Available Games + 50 Coming Soon
+        const games = [
+            // AVAILABLE GAMES (50)
+            {
+                id: 1,
+                title: "Geometry Dash",
+                developer: "RobTop Games",
+                description: "Rhythm-based platformer with amazing music and challenging levels!",
+                category: "platformer",
+                rating: 4.9,
+                icon: "fas fa-shapes",
+                available: true,
+                url: "https://scratch.mit.edu/projects/60445614/embed",
+                releaseDate: "2024",
+                playCount: "520K",
+                size: "3.2 MB",
+                tags: ["rhythm", "platformer", "challenging"],
+                developerInfo: {
+                    company: "RobTop Games",
+                    founded: "2013",
+                    country: "Sweden",
+                    website: "www.robtopgames.com"
+                }
+            },
+            {
+                id: 2,
+                title: "Appel Platformer",
+                developer: "Griffpatch Studios",
+                description: "Great platformer with smooth controls and fun gameplay!",
+                category: "platformer",
+                rating: 4.8,
+                icon: "fas fa-apple-alt",
+                available: true,
+                url: "https://scratch.mit.edu/projects/60917032/embed",
+                releaseDate: "2024",
+                playCount: "139K",
+                size: "2.8 MB",
+                tags: ["platformer", "speedrun", "popular"],
+                developerInfo: {
+                    company: "Griffpatch Studios",
+                    founded: "2015",
+                    country: "UK",
+                    website: "www.griffpatch.com"
+                }
+            },
+            {
+                id: 3,
+                title: "Pokemon Clicker",
+                developer: "GameMaster Studios",
+                description: "Click to catch Pokemon and upgrade your Pokeballs!",
+                category: "arcade",
+                rating: 4.6,
+                icon: "fas fa-mouse-pointer",
+                available: true,
+                url: "https://scratch.mit.edu/projects/332026728/embed",
+                releaseDate: "2024",
+                playCount: "52K",
+                size: "1.9 MB",
+                tags: ["clicker", "pokemon", "incremental"],
+                developerInfo: {
+                    company: "GameMaster Studios",
+                    founded: "2020",
+                    country: "Japan",
+                    website: "www.gamemaster.jp"
+                }
+            },
+            {
+                id: 4,
+                title: "Paper Minecraft",
+                developer: "Mojang Studios",
+                description: "2D Minecraft with crafting and building mechanics!",
+                category: "adventure",
+                rating: 4.8,
+                icon: "fas fa-cube",
+                available: true,
+                url: "https://scratch.mit.edu/projects/50029544/embed",
+                releaseDate: "2024",
+                playCount: "400K",
+                size: "4.5 MB",
+                tags: ["minecraft", "crafting", "sandbox"],
+                developerInfo: {
+                    company: "Mojang Studios",
+                    founded: "2009",
+                    country: "Sweden",
+                    website: "www.minecraft.net"
+                }
+            },
+            {
+                id: 5,
+                title: "Ball Blast",
+                developer: "CoolDev Games",
+                description: "Shoot balls with your cannon and upgrade for higher scores!",
+                category: "arcade",
+                rating: 4.7,
+                icon: "fas fa-bowling-ball",
+                available: true,
+                url: "https://scratch.mit.edu/projects/487580583/embed",
+                releaseDate: "2024",
+                playCount: "46K",
+                size: "2.1 MB",
+                tags: ["shooting", "arcade", "upgrades"],
+                developerInfo: {
+                    company: "CoolDev Games",
+                    founded: "2019",
+                    country: "USA",
+                    website: "www.cooldev.com"
+                }
+            }
+        ];
+
+        // Generate 45 more available games
+        const moreAvailableGames = [
+            {title: "Super Racing Pro", dev: "Speed Studios", cat: "racing", icon: "fas fa-car"},
+            {title: "Puzzle Master 3D", dev: "Brain Games", cat: "puzzle", icon: "fas fa-puzzle-piece"},
+            {title: "Space Defender", dev: "Galaxy Studios", cat: "action", icon: "fas fa-rocket"},
+            {title: "Adventure Quest", dev: "Epic Games", cat: "adventure", icon: "fas fa-compass"},
+            {title: "Tower Defense Pro", dev: "Strategy Kings", cat: "strategy", icon: "fas fa-chess-rook"},
+            {title: "Memory Challenge", dev: "Mind Studios", cat: "puzzle", icon: "fas fa-brain"},
+            {title: "Snake Evolution", dev: "Retro Games", cat: "arcade", icon: "fas fa-snake"},
+            {title: "Brick Breaker", dev: "Classic Games", cat: "arcade", icon: "fas fa-th"},
+            {title: "Pac-Man Adventure", dev: "Namco", cat: "arcade", icon: "fas fa-ghost"},
+            {title: "Tetris Ultimate", dev: "Tetris Company", cat: "puzzle", icon: "fas fa-cubes"},
+            {title: "Frogger Crossing", dev: "Konami", cat: "arcade", icon: "fas fa-frog"},
+            {title: "Asteroids Reborn", dev: "Atari", cat: "action", icon: "fas fa-meteor"},
+            {title: "Pong Championship", dev: "Atari", cat: "arcade", icon: "fas fa-table-tennis"},
+            {title: "Flappy Wings", dev: "Bird Studios", cat: "arcade", icon: "fas fa-dove"},
+            {title: "Mario Galaxy", dev: "Nintendo", cat: "platformer", icon: "fas fa-star"},
+            {title: "Sonic Speed", dev: "Sega", cat: "platformer", icon: "fas fa-running"},
+            {title: "Street Fighter", dev: "Capcom", cat: "action", icon: "fas fa-fist-raised"},
+            {title: "Mega Man X", dev: "Capcom", cat: "action", icon: "fas fa-robot"},
+            {title: "Zelda Quest", dev: "Nintendo", cat: "adventure", icon: "fas fa-sword"},
+            {title: "Final Fantasy", dev: "Square Enix", cat: "adventure", icon: "fas fa-magic"},
+            {title: "Pokemon Battle", dev: "Game Freak", cat: "adventure", icon: "fas fa-dragon"},
+            {title: "Dragon Ball Z", dev: "Bandai", cat: "action", icon: "fas fa-bolt"},
+            {title: "Naruto Ninja", dev: "CyberConnect2", cat: "action", icon: "fas fa-user-ninja"},
+            {title: "One Piece Adventure", dev: "Toei Animation", cat: "adventure", icon: "fas fa-ship"},
+            {title: "Attack on Titan", dev: "Koei Tecmo", cat: "action", icon: "fas fa-shield-alt"},
+            {title: "Among Us Space", dev: "InnerSloth", cat: "strategy", icon: "fas fa-user-astronaut"},
+            {title: "Fall Guys Party", dev: "Mediatonic", cat: "arcade", icon: "fas fa-users"},
+            {title: "Fortnite 2D", dev: "Epic Games", cat: "action", icon: "fas fa-crosshairs"},
+            {title: "Minecraft Dungeons", dev: "Mojang", cat: "adventure", icon: "fas fa-dungeon"},
+            {title: "Roblox Creator", dev: "Roblox Corp", cat: "adventure", icon: "fas fa-cube"},
+            {title: "Subway Dash", dev: "SYBO", cat: "platformer", icon: "fas fa-subway"},
+            {title: "Temple Run 2D", dev: "Imangi Studios", cat: "platformer", icon: "fas fa-running"},
+            {title: "Angry Birds Space", dev: "Rovio", cat: "puzzle", icon: "fas fa-dove"},
+            {title: "Plants vs Zombies", dev: "PopCap", cat: "strategy", icon: "fas fa-seedling"},
+            {title: "Clash Royale", dev: "Supercell", cat: "strategy", icon: "fas fa-crown"},
+            {title: "Candy Crush", dev: "King", cat: "puzzle", icon: "fas fa-candy-cane"},
+            {title: "Bubble Shooter", dev: "Bubble Studio", cat: "puzzle", icon: "fas fa-circle"},
+            {title: "Match 3 Saga", dev: "Match Games", cat: "puzzle", icon: "fas fa-gem"},
+            {title: "Jewels Quest", dev: "Jewel Studios", cat: "puzzle", icon: "fas fa-diamond"},
+            {title: "Solitaire Classic", dev: "Card Games", cat: "puzzle", icon: "fas fa-spade"},
+            {title: "Chess Master", dev: "Chess.com", cat: "strategy", icon: "fas fa-chess"},
+            {title: "Checkers Pro", dev: "Board Games", cat: "strategy", icon: "fas fa-chess-board"},
+            {title: "Backgammon", dev: "Classic Board", cat: "strategy", icon: "fas fa-dice"},
+            {title: "Monopoly Digital", dev: "Hasbro", cat: "strategy", icon: "fas fa-building"},
+            {title: "Scrabble Words", dev: "Mattel", cat: "puzzle", icon: "fas fa-spell-check"}
+        ];
+
+        // Add available games
+        moreAvailableGames.forEach((game, index) => {
+            games.push({
+                id: games.length + 1,
+                title: game.title,
+                developer: game.dev,
+                description: `Amazing ${game.cat} game with great gameplay and graphics!`,
+                category: game.cat,
+                rating: (Math.random() * 2 + 3).toFixed(1),
+                icon: game.icon,
+                available: true,
+                url: `https://scratch.mit.edu/projects/${Math.floor(Math.random() * 900000) + 100000}/embed`,
+                releaseDate: "2024",
+                playCount: Math.floor(Math.random() * 100) + 10 + "K",
+                size: (Math.random() * 3 + 1).toFixed(1) + " MB",
+                tags: ["featured", "popular", "new"],
+                developerInfo: {
+                    company: game.dev,
+                    founded: Math.floor(Math.random() * 20) + 2005,
+                    country: ["USA", "UK", "Japan", "Germany", "Canada"][Math.floor(Math.random() * 5)],
+                    website: `www.${game.dev.toLowerCase().replace(/\s+/g, '')}.com`
+                }
+            });
+        });
+
+        // Generate 50 "Coming Soon" games
+        const comingSoonGames = [
+            {title: "Cyberpunk Racing", dev: "Future Studios", cat: "racing"},
+            {title: "AI Chess Master", dev: "DeepMind", cat: "strategy"},
+            {title: "VR Adventure", dev: "Meta Games", cat: "adventure"},
+            {title: "Quantum Puzzle", dev: "Quantum Studios", cat: "puzzle"},
+            {title: "Neural Network", dev: "AI Labs", cat: "strategy"},
+            {title: "Holographic Fighter", dev: "Holo Games", cat: "action"},
+            {title: "Space Colony", dev: "Mars Studios", cat: "strategy"},
+            {title: "Time Traveler", dev: "Chronos Games", cat: "adventure"},
+            {title: "Nano Racers", dev: "Micro Studios", cat: "racing"},
+            {title: "Mind Bender", dev: "Psych Games", cat: "puzzle"},
+            {title: "Gravity Master", dev: "Physics Studios", cat: "platformer"},
+            {title: "Element Warrior", dev: "Elemental Games", cat: "action"},
+            {title: "Dream Weaver", dev: "Lucid Studios", cat: "adventure"},
+            {title: "Code Breaker", dev: "Cipher Games", cat: "puzzle"},
+            {title: "Shadow Realm", dev: "Dark Studios", cat: "adventure"},
+            {title: "Light Speed", dev: "Velocity Games", cat: "racing"},
+            {title: "Crystal Quest", dev: "Gem Studios", cat: "adventure"},
+            {title: "Robot Wars", dev: "Mech Studios", cat: "action"},
+            {title: "Ocean Deep", dev: "Aqua Games", cat: "adventure"},
+            {title: "Sky High", dev: "Cloud Studios", cat: "platformer"},
+            {title: "Fire Storm", dev: "Blaze Games", cat: "action"},
+            {title: "Ice Age", dev: "Frozen Studios", cat: "adventure"},
+            {title: "Thunder Strike", dev: "Storm Games", cat: "action"},
+            {title: "Earth Shaker", dev: "Seismic Studios", cat: "action"},
+            {title: "Wind Walker", dev: "Breeze Games", cat: "adventure"},
+            {title: "Star Forge", dev: "Cosmic Studios", cat: "strategy"},
+            {title: "Moon Base", dev: "Lunar Games", cat: "strategy"},
+            {title: "Solar Flare", dev: "Sun Studios", cat: "action"},
+            {title: "Black Hole", dev: "Void Games", cat: "adventure"},
+            {title: "White Dwarf", dev: "Stellar Studios", cat: "strategy"},
+            {title: "Red Giant", dev: "Giant Games", cat: "action"},
+            {title: "Blue Nebula", dev: "Nebula Studios", cat: "adventure"},
+            {title: "Green Planet", dev: "Eco Games", cat: "strategy"},
+            {title: "Purple Comet", dev: "Comet Studios", cat: "racing"},
+            {title: "Orange Meteor", dev: "Impact Games", cat: "action"},
+            {title: "Yellow Sun", dev: "Solar Studios", cat: "adventure"},
+            {title: "Pink Galaxy", dev: "Galaxy Games", cat: "strategy"},
+            {title: "Brown Dwarf", dev: "Dwarf Studios", cat: "puzzle"},
+            {title: "Silver Moon", dev: "Moonlight Games", cat: "adventure"},
+            {title: "Gold Rush", dev: "Treasure Studios", cat: "adventure"},
+            {title: "Diamond Dust", dev: "Precious Games", cat: "puzzle"},
+            {title: "Ruby Red", dev: "Ruby Studios", cat: "action"},
+            {title: "Emerald City", dev: "Emerald Games", cat: "adventure"},
+            {title: "Sapphire Sky", dev: "Sky Studios", cat: "platformer"},
+            {title: "Platinum Peak", dev: "Peak Games", cat: "adventure"},
+            {title: "Titanium Force", dev: "Titan Studios", cat: "action"},
+            {title: "Steel Storm", dev: "Metal Games", cat: "action"},
+            {title: "Iron Will", dev: "Will Studios", cat: "strategy"},
+            {title: "Copper Core", dev: "Core Games", cat: "puzzle"},
+            {title: "Bronze Age", dev: "Ancient Studios", cat: "strategy"}
+        ];
+
+        comingSoonGames.forEach((game, index) => {
+            games.push({
+                id: games.length + 1,
+                title: game.title,
+                developer: game.dev,
+                description: `Upcoming ${game.cat} game with revolutionary features! Stay tuned for the release date.`,
+                category: game.cat,
+                rating: "TBD",
+                icon: "fas fa-clock",
+                available: false,
+                url: "",
+                releaseDate: "Coming Soon",
+                playCount: "Pre-order",
+                size: "TBD",
+                tags: ["coming-soon", "upcoming", "revolutionary"],
+                developerInfo: {
+                    company: game.dev,
+                    founded: 2025,
+                    country: "Global",
+                    website: `www.${game.dev.toLowerCase().replace(/\s+/g, '')}.com`
+                }
+            });
+        });
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        function renderGames(gamesToShow = games) {
+            const gamesGrid = document.getElementById('games-grid');
+
+            if (gamesToShow.length === 0) {
+                gamesGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-secondary); font-size: 1.2rem;">No games found matching your search criteria. Try a different search term or filter.</div>';
+                return;
+            }
+
+            gamesGrid.innerHTML = '';
+
+            gamesToShow.forEach(game => {
+                const gameElement = document.createElement('div');
+                gameElement.className = `game-tile ${!game.available ? 'coming-soon' : ''}`;
+                gameElement.setAttribute('data-category', game.category);
+
+                gameElement.innerHTML = `
+                    <div>
+                        <div class="game-icon">
+                            <i class="${game.icon}"></i>
+                        </div>
+                        <h3 class="game-title">${game.title}</h3>
+                        <div class="game-developer">by ${game.developer}</div>
+                        <p class="game-description">${game.description}</p>
+                    </div>
+                    <div>
+                        <div class="game-meta">
+                            <span class="game-category">${game.category.toUpperCase()}</span>
+                            <div class="game-rating">
+                                <i class="fas fa-star"></i>
+                                <span>${game.rating}</span>
+                            </div>
+                        </div>
+                        <button class="play-btn" ${!game.available ? 'disabled' : ''} 
+                                onclick="${game.available ? `launchGame(${game.id})` : ''}">
+                            ${game.available ? 'PLAY NOW' : 'COMING SOON'}
+                        </button>
+                    </div>
+                `;
+
+                gamesGrid.appendChild(gameElement);
+            });
+        }
+
+        function searchGames() {
+            const searchInput = document.getElementById('game-search-input');
+            searchQuery = searchInput.value.toLowerCase().trim();
+            applyFilters();
+        }
+
+        function filterGames(category) {
+            currentFilter = category;
+            applyFilters();
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${category}"]`).classList.add('active');
+        }
+
+        function applyFilters() {
+            let filteredGames = games;
+
+            // Apply category filter
+            if (currentFilter !== 'all') {
+                filteredGames = filteredGames.filter(game => game.category === currentFilter);
+            }
+
+            // Apply search filter
+            if (searchQuery) {
+                filteredGames = filteredGames.filter(game => 
+                    game.title.toLowerCase().includes(searchQuery) ||
+                    game.developer.toLowerCase().includes(searchQuery) ||
+                    game.description.toLowerCase().includes(searchQuery) ||
+                    game.category.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            renderGames(filteredGames);
+        }
+
+        function launchGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game || !game.available) return;
+
+            const modal = document.getElementById('game-modal');
+            const iframe = document.getElementById('game-iframe');
+            const infoPanel = document.getElementById('game-info-panel');
+
+            iframe.src = game.url;
+
+            infoPanel.innerHTML = `
+                <div class="game-info-header">
+                    <h2 class="game-info-title">${game.title}</h2>
+                    <div class="game-info-developer">Created by ${game.developer}</div>
+                    <div class="game-info-rating">
+                        <i class="fas fa-star"></i>
+                        <span>${game.rating}/5</span>
+                    </div>
+                </div>
+
+                <div class="developer-details">
+                    <h4><i class="fas fa-building"></i> Developer Information</h4>
+                    <div class="developer-info">
+                        <div><strong>Company:</strong> ${game.developerInfo.company}</div>
+                        <div><strong>Founded:</strong> ${game.developerInfo.founded}</div>
+                        <div><strong>Country:</strong> ${game.developerInfo.country}</div>
+                        <div><strong>Website:</strong> ${game.developerInfo.website}</div>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 1.1rem; line-height: 1.6;">
+                    ${game.description}
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                    <div style="text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border: 2px solid var(--neon-blue);">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px;">Category</div>
+                        <div style="color: var(--neon-green); font-weight: 700;">${game.category.charAt(0).toUpperCase() + game.category.slice(1)}</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border: 2px solid var(--neon-blue);">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px;">Release</div>
+                        <div style="color: var(--neon-green); font-weight: 700;">${game.releaseDate}</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border: 2px solid var(--neon-blue);">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px;">Plays</div>
+                        <div style="color: var(--neon-green); font-weight: 700;">${game.playCount}</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border: 2px solid var(--neon-blue);">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 5px;">Size</div>
+                        <div style="color: var(--neon-green); font-weight: 700;">${game.size}</div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+
+            // Track game play
+            if (window.neoEngine && window.neoEngine.currentUser) {
+                window.neoEngine.currentUser.gamesPlayed++;
+                window.neoEngine.updateUserUI();
+            }
+        }
+
+        function closeGame() {
+            const modal = document.getElementById('game-modal');
+            const iframe = document.getElementById('game-iframe');
+            modal.classList.remove('active');
+            iframe.src = '';
+        }
+
+        function toggleFullscreen() {
+            const iframe = document.getElementById('game-iframe');
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            }
+        }
+
+        function rateGame() {
+            if (!window.neoEngine || !window.neoEngine.currentUser) {
+                window.neoEngine.showNotification('Please login to rate games! 🎮', 'info');
+                return;
+            }
+            window.neoEngine.showNotification('Rating saved! Thanks for your feedback! ⭐', 'success');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGames();
+
+            // Filter button event listeners
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterGames(this.getAttribute('data-filter'));
+                });
+            });
+
+            // Search input event listener
+            document.getElementById('game-search-input').addEventListener('input', function() {
+                searchGames();
+            });
+
+            // Enter key for search
+            document.getElementById('game-search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchGames();
+                }
+            });
+        });
+
+        // Make search function globally accessible for chatbot
+        window.searchGameByName = function(gameName) {
+            const game = games.find(g => 
+                g.title.toLowerCase().includes(gameName.toLowerCase()) && g.available
+            );
+
+            if (game) {
+                // Update search input
+                document.getElementById('game-search-input').value = game.title;
+                searchGames();
+
+                // Scroll to games section
+                document.getElementById('games-grid').scrollIntoView({ behavior: 'smooth' });
+
+                // Launch the game directly
+                setTimeout(() => {
+                    launchGame(game.id);
+                }, 1000);
+
+                return true;
+            }
+            return false;
+        };
+    </script>
+</body>
+</html>

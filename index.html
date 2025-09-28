@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neo Games - Ultimate Gaming Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpeg" href="logo-light.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="description" content="Welcome to Neo Games - The ultimate gaming hub with 100+ games, social features, and cutting-edge technology.">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-container">
+            <img src="logo-light.jpg" class="loading-logo" alt="Neo Games" id="loading-logo">
+            <div class="loading-text">INITIALIZING GAMING MATRIX...</div>
+        </div>
+    </div>
+
+    <!-- Gaming Icons Background -->
+    <div class="gaming-icons-bg" id="gaming-icons-bg">
+        <!-- Gaming icons will be generated here -->
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="logo-light.jpg" alt="Neo Games" id="nav-logo">
+        </div>
+
+        <ul class="navbar-links">
+            <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="games.html" class="nav-link"><i class="fas fa-gamepad"></i> Games</a></li>
+            <li><a href="social.html" class="nav-link"><i class="fas fa-users"></i> Social</a></li>
+            <li><a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+
+        <div class="user-controls">
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </button>
+
+            <div id="guest-buttons">
+                <button class="btn-gaming btn-primary" onclick="showLogin()">Login</button>
+                <button class="btn-gaming btn-secondary" onclick="showRegister()">Sign Up</button>
+            </div>
+
+            <div id="user-profile" style="display:none;">
+                <img id="user-avatar" src="avatar-default.jpg" class="user-avatar" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-blue); margin-right: 10px;">
+                <span id="user-name" style="color: var(--text-primary); font-weight: 600; margin-right: 15px;">Player</span>
+                <button class="btn-gaming" onclick="logout()" style="background: var(--neon-pink); color: white; padding: 8px 16px; font-size: 12px;">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Enhanced Background -->
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-bg">
+                <div class="matrix-bg"></div>
+                <div class="floating-shapes"></div>
+            </div>
+
+            <div class="hero-content">
+                <img src="logo-light.jpg" class="hero-logo" alt="Neo Games" id="hero-logo">
+
+                <h1 class="hero-title">NEO GAMES</h1>
+
+                <p class="hero-subtitle" contenteditable="true" id="hero-subtitle">
+                    Welcome to the ultimate gaming universe where technology meets entertainment - experience next-generation gaming like never before!
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-players">23</div>
+                        <div class="stat-label">Active Players</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="games-count">100</div>
+                        <div class="stat-label">Epic Games</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-playtime">88</div>
+                        <div class="stat-label">Hours Played</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="achievements">1,234</div>
+                        <div class="stat-label">Achievements</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="games.html" class="cta-btn cta-primary">
+                        <i class="fas fa-play"></i>
+                        <span>START GAMING</span>
+                    </a>
+                    <button class="cta-btn cta-secondary" onclick="startTutorial()">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>TAKE TOUR</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <h2 class="section-title">GAMING FEATURES</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title">100+ Premium Games</h3>
+                    <p class="feature-desc">Massive collection of carefully curated games across all genres - from action-packed adventures to mind-bending puzzles, all optimized for maximum fun.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Social Gaming Hub</h3>
+                    <p class="feature-desc">Connect with friends, chat in real-time, form gaming groups, and compete on leaderboards. Build your gaming community and share experiences.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="feature-title">Achievement System</h3>
+                    <p class="feature-desc">Unlock achievements, track your progress, earn rewards, and climb global leaderboards. Show off your gaming skills and dedication.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Experience</h3>
+                    <p class="feature-desc">Get personalized game recommendations, intelligent tutorials, and 24/7 AI support to enhance your gaming journey.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Cross-Platform Gaming</h3>
+                    <p class="feature-desc">Play seamlessly across all devices with responsive design, cloud save synchronization, and optimized performance everywhere.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Secure & Private</h3>
+                    <p class="feature-desc">Advanced security measures, encrypted data, privacy protection, and safe gaming environment for all users.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section" id="team">
+            <h2 class="section-title">MEET THE TEAM</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="ak.jpg" alt="Akshan Muhammed K" class="team-avatar">
+                    <h3 class="team-name">Akshan Muhammed K</h3>
+                    <p class="team-role">Founder & Developer</p>
+                    <p class="team-bio">Visionary creator of Neo Games, passionate about combining cutting-edge technology with immersive gaming experiences. Expert in full-stack development and game platform architecture.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">Full-Stack Development</span>
+                        <span class="skill-tag">Game Development</span>
+                        <span class="skill-tag">UI/UX Design</span>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="rz.jpg" alt="Rizin Rahman T" class="team-avatar">
+                    <h3 class="team-name">Rizin Rahman T</h3>
+                    <p class="team-role">Game Developer & Manager</p>
+                    <p class="team-bio">Expert game developer and project manager responsible for curating and optimizing our game library. Ensures every game meets our quality standards and provides the best user experience.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">Game Development</span>
+                        <span class="skill-tag">Project Management</span>
+                        <span class="skill-tag">Quality Assurance</span>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <img src="am.jpg" alt="Amaan Yousuf" class="team-avatar">
+                    <h3 class="team-name">Amaan Yousuf</h3>
+                    <p class="team-role">Social Media Controller</p>
+                    <p class="team-bio">Creative social media strategist who manages our online presence and community engagement. Builds connections between gamers and keeps our community thriving across all platforms.</p>
+                    <div class="team-skills">
+                        <span class="skill-tag">Social Media</span>
+                        <span class="skill-tag">Community Management</span>
+                        <span class="skill-tag">Content Creation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with Social Links and Contact Form -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Neo Games</h4>
+                <p style="color: var(--text-secondary); line-height: 1.6;">The ultimate gaming platform where technology meets entertainment. Join millions of gamers worldwide in the next-gen gaming revolution.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/neo_games_hq" title="Instagram" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@neo_games_hq" title="YouTube" class="social-link youtube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://x.com/NeoGameHQ" title="X (Twitter)" class="social-link twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://discord.gg/rh3baJbH" title="Discord" class="social-link discord">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="https://github.com/neogameshq" title="Github" class="social-link github">
+                        <i class="fab fa-github"></i>
+                    </a>               
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="games.html"><i class="fas fa-gamepad"></i> Browse Games</a></li>
+                    <li><a href="social.html"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="profile.html"><i class="fas fa-user"></i> My Profile</a></li>
+                    <li><a href="#" onclick="startTutorial()"><i class="fas fa-graduation-cap"></i> Take Tour</a></li>
+                    <li><a href="#team"><i class="fas fa-heart"></i> Our Team</a></li>
+                    <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <div class="contact-form">
+                    <h4><i class="fas fa-envelope"></i> Contact Us</h4>
+                    <form id="contact-form">
+    <div class="form-group">
+        <label for="contact-name">Name</label>
+        <input type="text" id="contact-name" required>
+    </div>
+    <div class="form-group">
+        <label for="contact-email">Email</label>
+        <input type="email" id="contact-email" required>
+    </div>
+    <div class="form-group">
+        <label for="contact-subject">Subject</label>
+        <select id="contact-subject" required>
+            <option value="">Select Subject</option>
+            <option value="🐛 Bug Report">🐛 Bug Report</option>
+            <option value="💡 Feature Request">💡 Feature Request</option>
+            <option value="🎮 Game Issue">🎮 Game Issue</option>
+            <option value="📱 Technical Support">📱 Technical Support</option>
+            <option value="💬 General Inquiry">💬 General Inquiry</option>
+            <option value="🤝 Partnership">🤝 Partnership</option>
+            <option value="👏 Compliment">👏 Compliment</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" rows="3" required placeholder="Tell us how we can help you..."></textarea>
+    </div>
+    <div class="captcha-container">
+        <div class="captcha-text" id="contact-captcha">Loading...</div>
+        <input type="text" placeholder="Enter captcha code" id="contact-captcha-input" required>
+    </div>
+    <button type="submit" class="btn-gaming btn-primary">
+        <i class="fas fa-paper-plane"></i> Send Message
+    </button>
+</form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Neo Games. All rights reserved. | Built with passion for the ultimate gaming experience!</p>
+        </div>
+    </footer>
+
+    <!-- Smaller Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content modal-small">
+            <span class="close-btn" onclick="closeModal('login-modal')">&times;</span>
+            <h2 class="modal-title">
+                <i class="fas fa-sign-in-alt"></i> 
+                Welcome Back
+            </h2>
+            <form id="login-form" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="login-username" placeholder="USERNAME" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="PASSWORD" required>
+                </div>
+                <div class="captcha-container">
+                    <div class="captcha-text" id="login-captcha">Loading...</div>
+                    <input type="text" placeholder="Enter captcha" id="login-captcha-input" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>LOGIN</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Smaller Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content modal-medium">
+            <span class="close-btn" onclick="closeModal('register-modal')">&times;</span>
+            <h2 class="modal-title">
+                <i class="fas fa-user-plus"></i>
+                Join Neo Games
+            </h2>
+            <form id="register-form" class="auth-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="reg-username" placeholder="USERNAME" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="reg-email" placeholder="EMAIL" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="reg-password" placeholder="PASSWORD" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-birthday-cake"></i>
+                        <input type="number" id="reg-age" placeholder="AGE" min="13" max="100" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <i class="fas fa-venus-mars"></i>
+                        <select id="reg-gender" required>
+                            <option value="">Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-gamepad"></i>
+                        <select id="reg-favorite-game" required>
+                            <option value="">Game Type</option>
+                            <option value="action">Action</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="puzzle">Puzzle</option>
+                            <option value="racing">Racing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-question-circle"></i>
+                    <select id="reg-security-question" required>
+                        <option value="">Security Question</option>
+                        <option value="first-game">First video game?</option>
+                        <option value="favorite-character">Favorite game character?</option>
+                        <option value="best-game">Best game ever played?</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="reg-security-answer" placeholder="SECURITY ANSWER" required>
+                </div>
+
+                <div class="avatar-selector">
+                    <p>Choose Avatar:</p>
+                    <div class="avatar-options">
+                        <img src="avatar-default.jpg" class="avatar-option selected" data-avatar="avatar-default.jpg">
+                        <img src="avatar2.jpg" class="avatar-option" data-avatar="avatar2.jpg">
+                        <img src="avatar3.jpg" class="avatar-option" data-avatar="avatar3.jpg">
+                    </div>
+                </div>
+
+                <div class="captcha-container">
+                    <div class="captcha-text" id="register-captcha">Loading...</div>
+                    <input type="text" placeholder="Enter captcha" id="register-captcha-input" required>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-user-plus"></i>
+                    <span>CREATE ACCOUNT</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tutorial System -->
+    <div id="tutorial-overlay" class="tutorial-overlay">
+        <div class="tutorial-bubble">
+            <div class="tutorial-character" id="tutorial-character">🎮</div>
+            <div class="tutorial-content">
+                <h3 class="tutorial-title" id="tutorial-title">Welcome to Neo Games!</h3>
+                <p class="tutorial-text" id="tutorial-text">Let me show you around this amazing gaming platform!</p>
+                <div class="tutorial-controls">
+                    <button class="tutorial-btn btn-skip" onclick="skipTutorial()">Skip Tour</button>
+                    <button class="tutorial-btn btn-next" onclick="nextTutorial()" id="tutorial-next">Start Tour</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Toggle -->
+    <button class="chatbot-toggle" onclick="toggleChatbot()" title="Chat with Neo AI">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script src="neo-engine.js"></script>
+</body>
+</html>
